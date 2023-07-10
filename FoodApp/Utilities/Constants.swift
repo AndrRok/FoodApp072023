@@ -11,7 +11,3 @@ enum Images {
    static let placeholder  = UIImage(named: "placeholderimage")
 }
 
-enum Values{
-    static let  padding: CGFloat                    = 20
-}
-

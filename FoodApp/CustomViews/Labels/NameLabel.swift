@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NameLabel: UILabel {
+final class NameLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -17,10 +17,18 @@ class NameLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat){
+    convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat, type: String){
         self.init(frame: .zero)
         self.textAlignment = textAlignment
-        self.font          = UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        switch type {
+        case "medium":
+            self.font          = UIFont(name: "SFProDisplay-Medium", size: fontSize)
+        case "regular":
+            self.font          = UIFont(name: "SFProDisplay-Regular", size: fontSize)
+        default:
+            break
+        }
+        
     }
     
     private func configure(){

@@ -9,17 +9,18 @@
 import UIKit
 
 
-class ProductDetailsVC: UIViewController {
+final class ProductDetailsVC: UIViewController {
     
-    private lazy var containerView = AlertContainerView()
-    private lazy var foodImageView = ItemImage(frame: .zero)
-    private let nameLabel   = UILabel()
-    private let priceLabel = UILabel()
-    private let weightLabel = UILabel()
-    private let descriptionLabel = UILabel()
+    private let containerView = AlertContainerView()
+    private let foodImageView = ItemImage(frame: .zero)
+    private let nameLabel = NameLabel(textAlignment: .left, fontSize: 16, type: "medium")
+    private let priceLabel = NameLabel(textAlignment: .left, fontSize: 14, type: "regular")
+    private let weightLabel = NameLabel(textAlignment: .left, fontSize: 14, type: "regular")
+    private let descriptionLabel = NameLabel(textAlignment: .left, fontSize: 14, type: "regular")
     private let actionButton = UIButton()
-    private lazy var addToFavoritesButton   = UIButton()
-    private lazy var closeButton   = UIButton()
+    private let addToFavoritesButton  = UIButton()
+    private let  closeButton   = UIButton()
+    private let imageContainer = UIView()
     private let padding: CGFloat = 10
     private var item: Dishes!
     
@@ -27,8 +28,8 @@ class ProductDetailsVC: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.item = foodItem
         nameLabel.text = item.name
-        priceLabel.text = "\(String(item.price))₽"
-        weightLabel.text = "• \(String(item.weight))г"
+        priceLabel.text = "\(String(item.price)) ₽"
+        weightLabel.text = "· \(String(item.weight))г"
         descriptionLabel.text = item.description
         foodImageView.downloadImage(fromURL: item.imageUrl)
     }
@@ -58,7 +59,8 @@ class ProductDetailsVC: UIViewController {
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            containerView.widthAnchor.constraint(equalToConstant: 343),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             containerView.heightAnchor.constraint(equalToConstant: 446)
         ])
     }
@@ -66,22 +68,28 @@ class ProductDetailsVC: UIViewController {
     
     //MARK: - Configure UI
     private func configureImageView(){
-        containerView.addSubview(foodImageView)
+        imageContainer.translatesAutoresizingMaskIntoConstraints = false
+        imageContainer.backgroundColor = Colors.lightBrown
+        imageContainer.layer.cornerRadius =  10
+        containerView.addSubview(imageContainer)
+        imageContainer.addSubview(foodImageView)
         foodImageView.translatesAutoresizingMaskIntoConstraints = false
         foodImageView.contentMode = .scaleAspectFit
         foodImageView.layer.cornerRadius =  10
-        foodImageView.backgroundColor = Colors.lightBrown
         
         NSLayoutConstraint.activate([
-            foodImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            foodImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
-            foodImageView.widthAnchor.constraint(equalToConstant: 300),
-            foodImageView.heightAnchor.constraint(equalToConstant: 230)
+            imageContainer.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            imageContainer.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
+            imageContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            imageContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            imageContainer.heightAnchor.constraint(equalToConstant: 230),
+            
+            foodImageView.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
+            foodImageView.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
+            foodImageView.widthAnchor.constraint(equalToConstant: 200),
+            foodImageView.heightAnchor.constraint(equalToConstant: 200),
         ])
     }
-    
-    
-    
     
     private func configureCloseButton(){
         containerView.addSubview(closeButton)
@@ -95,15 +103,12 @@ class ProductDetailsVC: UIViewController {
         closeButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            closeButton.trailingAnchor.constraint(equalTo: foodImageView.trailingAnchor, constant: -10),
-            closeButton.topAnchor.constraint(equalTo: foodImageView.topAnchor, constant: 10),
-            closeButton.widthAnchor.constraint(equalToConstant: 30),
-            closeButton.heightAnchor.constraint(equalToConstant: 30)
+            closeButton.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor, constant: -8),
+            closeButton.topAnchor.constraint(equalTo: imageContainer.topAnchor, constant: 8),
+            closeButton.widthAnchor.constraint(equalToConstant: 40),
+            closeButton.heightAnchor.constraint(equalToConstant: 40)
         ])
-        
-        
     }
-    
     
     private func configureAddToFavoritesButton(){
         containerView.addSubview(addToFavoritesButton)
@@ -114,26 +119,23 @@ class ProductDetailsVC: UIViewController {
         addToFavoritesButton.layer.cornerRadius = 8
         
         NSLayoutConstraint.activate([
-            addToFavoritesButton.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -10),
-            addToFavoritesButton.topAnchor.constraint(equalTo: foodImageView.topAnchor, constant: 10),
-            addToFavoritesButton.widthAnchor.constraint(equalToConstant: 30),
-            addToFavoritesButton.heightAnchor.constraint(equalToConstant: 30)
+            addToFavoritesButton.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -8),
+            addToFavoritesButton.topAnchor.constraint(equalTo: imageContainer.topAnchor, constant: 8),
+            addToFavoritesButton.widthAnchor.constraint(equalToConstant: 40),
+            addToFavoritesButton.heightAnchor.constraint(equalToConstant: 40)
         ])
-        
-        
     }
     
     
     private func configureNameLabel(){
         containerView.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font =  UIFont(name: "Montserrat", size: 14)
         nameLabel.textAlignment = .left
         
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: foodImageView.bottomAnchor, constant: padding),
-            nameLabel.leadingAnchor.constraint(equalTo: foodImageView.leadingAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: foodImageView.trailingAnchor),
+            nameLabel.topAnchor.constraint(equalTo: imageContainer.bottomAnchor, constant: 8),
+            nameLabel.leadingAnchor.constraint(equalTo: imageContainer.leadingAnchor),
+            nameLabel.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
             nameLabel.heightAnchor.constraint(equalToConstant: 28)
         ])
     }
@@ -143,24 +145,24 @@ class ProductDetailsVC: UIViewController {
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         actionButton.setTitleColor(.label, for: .normal)
         actionButton.setTitle("Добавить в корзину", for: .normal)
-        actionButton.titleLabel?.font = UIFont(name: "Montserrat", size: 12)
+        actionButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
         actionButton.backgroundColor = Colors.originalBlue
         actionButton.layer.cornerRadius = 10
         actionButton.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
+        actionButton.setTitleColor(.white, for: .normal)
         
         NSLayoutConstraint.activate([
-            actionButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding),
-            actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            actionButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            actionButton.heightAnchor.constraint(equalToConstant: 44)
+            actionButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16),
+            actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            actionButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            actionButton.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
     
     private func configurePriceLabel(){
         containerView.addSubview(priceLabel)
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
-        priceLabel.numberOfLines      = 1
-        priceLabel.font =  UIFont(name: "Montserrat", size: 12)
+        priceLabel.numberOfLines = 1
         priceLabel.textAlignment = .left
         
         NSLayoutConstraint.activate([
@@ -174,8 +176,7 @@ class ProductDetailsVC: UIViewController {
     private func configureWeightLabel(){
         containerView.addSubview(weightLabel)
         weightLabel.translatesAutoresizingMaskIntoConstraints = false
-        weightLabel.numberOfLines      = 1
-        weightLabel.font =  UIFont(name: "Montserrat", size: 12)
+        weightLabel.numberOfLines = 1
         weightLabel.textAlignment = .left
         weightLabel.textColor = .systemGray2
         
@@ -189,14 +190,14 @@ class ProductDetailsVC: UIViewController {
     private func configureDescriptionLabel(){
         containerView.addSubview(descriptionLabel)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.numberOfLines      = 0
-        descriptionLabel.font =  UIFont(name: "Montserrat", size: 12)
+        descriptionLabel.numberOfLines = 0
         descriptionLabel.textAlignment = .left
+        descriptionLabel.textColor = .systemGray
         
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: foodImageView.trailingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -5)
         ])
     }

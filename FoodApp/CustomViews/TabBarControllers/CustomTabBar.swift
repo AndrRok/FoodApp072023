@@ -7,10 +7,10 @@
 
 import UIKit
 
-class CustomTabBar: UIViewController {
+final class CustomTabBar: UIViewController {
     
     private lazy var tabBar                 = UIStackView()
-    private lazy var mainVCButton           = UIButton()
+    private lazy var mainVCButton           = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
     private lazy var searchVCButton         = UIButton()
     private lazy var cartVCButton           = UIButton()
     private lazy var profileVCButton        = UIButton()
@@ -20,22 +20,12 @@ class CustomTabBar: UIViewController {
         configure()
         setVC(vc: MainVC())
         configureButtons()
-        let buttonsArray = [mainVCButton, cartVCButton, searchVCButton, profileVCButton]
-        for button in buttonsArray {
-            button.configuration?.baseForegroundColor = .secondaryLabel
-            button.configuration?.baseBackgroundColor = .systemBackground
-        }
-        mainVCButton.configuration?.baseForegroundColor = .systemCyan
+        redrawButtons()
+        mainVCButton.configuration?.baseForegroundColor = Colors.originalBlue
         NotificationCenter.default.addObserver(self, selector: #selector(goCategoryVC(notification:)), name: Notification.Name("changeIndexToCategoryVC"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(goMainVC(notification:)), name: Notification.Name("changeIndexToMain"), object: nil)
     }
 
-    
-    override func viewDidLayoutSubviews() {
-        makeButtonCircle(buttons: [mainVCButton, cartVCButton, searchVCButton, profileVCButton])
-    }
-    
-    
     private func configure(){
         view.addSubview(tabBar)
         tabBar.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +56,7 @@ class CustomTabBar: UIViewController {
             lineView.topAnchor.constraint(equalTo: tabBar.topAnchor),
             lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            lineView.heightAnchor.constraint(equalToConstant: 2),
+            lineView.heightAnchor.constraint(equalToConstant: 1),
         ])
     }
     
@@ -74,37 +64,45 @@ class CustomTabBar: UIViewController {
         var mainButtonConfiguration = UIButton.Configuration.filled()
         mainButtonConfiguration.image = UIImage(named: "mainIcon")
         mainVCButton.configuration = mainButtonConfiguration
+        setFontAndTextForButtons(mainVCButton, buttonText: "Главная")
+        mainVCButton.configuration?.imagePlacement = .top
         mainVCButton.addAction(UIAction{ [self]_ in
             self.setVC(vc: MainVC())
             redrawButtons()
-            mainVCButton.configuration?.baseForegroundColor = .systemCyan
-        }, for: .touchUpInside)
-        
-        var cartButtonConfiguration = UIButton.Configuration.filled()
-        cartButtonConfiguration.image = UIImage(named: "cartIcon")
-        cartVCButton.configuration = cartButtonConfiguration
-        cartVCButton.addAction(UIAction{ [self]_ in
-            self.setVC(vc: CartVC())
-            redrawButtons()
-            cartVCButton.configuration?.baseForegroundColor = .systemCyan
+            mainVCButton.configuration?.baseForegroundColor = Colors.originalBlue
         }, for: .touchUpInside)
         
         var searchButtonConfiguration = UIButton.Configuration.filled()
         searchButtonConfiguration.image = UIImage(named: "searchIcon")
         searchVCButton.configuration = searchButtonConfiguration
+        setFontAndTextForButtons(searchVCButton, buttonText: "Поиск")
+        searchVCButton.configuration?.imagePlacement = .top
         searchVCButton.addAction(UIAction{ [self] _ in
             self.setVC(vc: SearchVC())
             redrawButtons()
-            searchVCButton.configuration?.baseForegroundColor = .systemCyan
+            searchVCButton.configuration?.baseForegroundColor = Colors.originalBlue
+        }, for: .touchUpInside)
+        
+        var cartButtonConfiguration = UIButton.Configuration.filled()
+        cartButtonConfiguration.image = UIImage(named: "cartIcon")
+        cartVCButton.configuration = cartButtonConfiguration
+        setFontAndTextForButtons(cartVCButton, buttonText: "Корзина")
+        cartVCButton.configuration?.imagePlacement = .top
+        cartVCButton.addAction(UIAction{ [self]_ in
+            self.setVC(vc: CartVC())
+            redrawButtons()
+            cartVCButton.configuration?.baseForegroundColor = Colors.originalBlue
         }, for: .touchUpInside)
         
         var profileButtonConfiguration = UIButton.Configuration.filled()
         profileButtonConfiguration.image = UIImage(named: "profileIcon")
         profileVCButton.configuration = profileButtonConfiguration
+        setFontAndTextForButtons(profileVCButton, buttonText: "Аккаунт")
+        profileVCButton.configuration?.imagePlacement = .top
         profileVCButton.addAction(UIAction{ [self]_ in
             self.setVC(vc: ProfileVC())
             redrawButtons()
-            profileVCButton.configuration?.baseForegroundColor = .systemCyan
+            profileVCButton.configuration?.baseForegroundColor = Colors.originalBlue
         }, for: .touchUpInside)
     }
     
@@ -135,6 +133,12 @@ class CustomTabBar: UIViewController {
             button.configuration?.baseForegroundColor = .secondaryLabel
             button.configuration?.baseBackgroundColor = .systemBackground
         }
+    }
+    
+    private func setFontAndTextForButtons(_ button: UIButton, buttonText: String){
+        var container = AttributeContainer()
+        container.font = UIFont(name: "SFProDisplay-Medium", size: 10)
+        button.configuration?.attributedTitle = AttributedString(buttonText, attributes: container)
     }
     
     @objc private func goMainVC(notification: NSNotification){

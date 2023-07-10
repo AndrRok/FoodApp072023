@@ -12,14 +12,14 @@ protocol ReloadCartProtocol{
     func reloadCart()
 }
 
-class CartCell: UITableViewCell {
+final class CartCell: UITableViewCell {
     
     private var cartArray = PersistenceManager.sharedRealm.inCartItem
     static let reuseID      = "cartCell"
     private let imageImageView  = ItemImage(frame: .zero)
-    private let nameLabel       = NameLabel(textAlignment: .left, fontSize: 18)
-    private let priceLabel      = NameLabel(textAlignment: .left, fontSize: 12)
-    private let weightLabel     = NameLabel(textAlignment: .left, fontSize: 12)
+    private let nameLabel       = NameLabel(textAlignment: .left, fontSize: 14, type: "regular")
+    private let priceLabel      = NameLabel(textAlignment: .left, fontSize: 14, type: "regular")
+    private let weightLabel     = NameLabel(textAlignment: .left, fontSize: 14, type: "regular")
     public  lazy var stepper    = CustomStepper()
     private var price         = Int()
     private var amountOfItems = Int()
@@ -46,9 +46,9 @@ class CartCell: UITableViewCell {
         DispatchQueue.main.async{ [self] in
             amountOfItems = amount
             nameLabel.text = foodItem.name
-            weightLabel.text = "• \(String(foodItem.weight))г"
+            weightLabel.text = "· \(String(foodItem.weight))г"
             imageImageView.downloadImage(fromURL: foodItem.imageUrl)
-            priceLabel.text = "\(foodItem.price*amountOfItems)₽"
+            priceLabel.text = "\(foodItem.price*amountOfItems) ₽"
             stepper.setValueOfStepper(amount: amount, id: cellId)
         }
     }
@@ -92,19 +92,20 @@ class CartCell: UITableViewCell {
             
             stepper.centerYAnchor.constraint(equalTo: centerYAnchor),
             stepper.widthAnchor.constraint(equalToConstant: 100),
-            stepper.heightAnchor.constraint(equalToConstant: 40),
-            stepper.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding*5),
+            stepper.heightAnchor.constraint(equalToConstant: 30),
+            stepper.trailingAnchor.constraint(equalTo: trailingAnchor),
             
-            nameLabel.topAnchor.constraint(equalTo: imageImageView.topAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: imageImageView.trailingAnchor, constant: padding),
+            nameLabel.topAnchor.constraint(equalTo: imageImageView.topAnchor, constant: 14),
+            nameLabel.leadingAnchor.constraint(equalTo: imageImageView.trailingAnchor, constant: 8),
             nameLabel.trailingAnchor.constraint(equalTo: stepper.leadingAnchor, constant: -padding),
             
-            priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: padding),
+            priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
             priceLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
         
             weightLabel.topAnchor.constraint(equalTo: priceLabel.topAnchor),
             weightLabel.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 3),
             weightLabel.trailingAnchor.constraint(equalTo: stepper.leadingAnchor, constant: -padding),
+            //weightLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14)
             
         ])
     }
@@ -114,7 +115,7 @@ class CartCell: UITableViewCell {
 extension CartCell: SendValueProtocol{
     func setValue(value: Int) {
         amountOfItems = value
-        priceLabel.text = "\(Int(price*amountOfItems))₽"
+        priceLabel.text = "\(Int(price*amountOfItems)) ₽"
         NotificationCenter.default.post(name: Notification.Name("StepperValueChanged"), object: nil)
     }
 }

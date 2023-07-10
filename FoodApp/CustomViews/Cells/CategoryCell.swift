@@ -7,14 +7,14 @@
 
 import UIKit
 
-class CategoryCell: UICollectionViewCell {
+final class CategoryCell: UICollectionViewCell {
     
-    private var cateogoryLabel = NameLabel(textAlignment: .center, fontSize: 12)
+    private var cateogoryLabel = NameLabel(textAlignment: .center, fontSize: 14, type: "regular")
     public static let reuseID = "categoryCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor =  .quaternaryLabel
+        contentView.backgroundColor = Colors.lightBrown
         configure()
     }
     
@@ -29,7 +29,7 @@ class CategoryCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             DispatchQueue.main.async {
-                self.contentView.backgroundColor  = self.isSelected ? Colors.originalBlue   : .quaternaryLabel
+                self.contentView.backgroundColor  = self.isSelected ? Colors.originalBlue   : Colors.lightBrown
                 self.cateogoryLabel.textColor     = self.isSelected ? .white     : .black
             }
         }

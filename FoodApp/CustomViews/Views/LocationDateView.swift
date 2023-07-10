@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LocationDateView: UIView {
+final class LocationDateView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,8 +18,6 @@ class LocationDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-
     func configureView(){
         let date = Date()
         let calendar = Calendar.current
@@ -27,18 +25,17 @@ class LocationDateView: UIView {
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
         let monthName = DateFormatter().monthSymbols[month - 1]
-        let labelOne = UILabel()
+        let labelOne = NameLabel(textAlignment: .left, fontSize: 18, type: "medium")
+        let labelTwo = NameLabel(textAlignment: .left, fontSize: 14, type: "medium")
+        let imageOne = UIImageView(image:  UIImage(named: "navigationIcon"))
         labelOne.text = "Санкт-Петербург"
-        let labelTwo = UILabel()
         labelTwo.text = "\(day) \(monthName), \(year)"
-        let imageOne = UIImageView(image: UIImage(named: "navigationIcon"))
         addSubviews(labelOne, labelTwo, imageOne)
         labelOne.translatesAutoresizingMaskIntoConstraints = false
         labelTwo.translatesAutoresizingMaskIntoConstraints = false
         imageOne.translatesAutoresizingMaskIntoConstraints = false
-        imageOne.tintColor = UIColor.label
-        labelOne.font = UIFont.systemFont(ofSize: 20)
-        labelTwo.font = UIFont.systemFont(ofSize: 20)
+        imageOne.tintColor = .label
+        labelTwo.textColor  = UIColor(white: 0, alpha: 0.5)
         
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 45),
@@ -50,10 +47,13 @@ class LocationDateView: UIView {
             imageOne.widthAnchor.constraint(equalToConstant: 24),
             
             labelOne.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            labelOne.leadingAnchor.constraint(equalTo: imageOne.trailingAnchor, constant: 5),
+            labelOne.leadingAnchor.constraint(equalTo: imageOne.trailingAnchor, constant: 4),
+            labelOne.heightAnchor.constraint(equalToConstant: 22),
             
-            labelTwo.topAnchor.constraint(equalTo: labelOne.bottomAnchor, constant: 5),
+            labelTwo.topAnchor.constraint(equalTo: labelOne.bottomAnchor, constant: 4),
             labelTwo.leadingAnchor.constraint(equalTo: imageOne.trailingAnchor, constant: 5),
+            labelTwo.heightAnchor.constraint(equalToConstant: 16),
+            
         ])
     }
 }

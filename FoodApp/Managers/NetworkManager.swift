@@ -43,7 +43,6 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy  = .convertFromSnakeCase
-                //decoder.dateDecodingStrategy = .iso8601
                 let resultFoodItems            = try decoder.decode(FoodItemResponse.self, from: data)
                 completed(.success(resultFoodItems))
             } catch {
@@ -82,7 +81,6 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy  = .convertFromSnakeCase
-                //decoder.dateDecodingStrategy = .iso8601
                 let resultDishes        = try decoder.decode(DishesResponse.self, from: data)
                 completed(.success(resultDishes))
             } catch {

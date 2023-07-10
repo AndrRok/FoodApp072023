@@ -8,11 +8,11 @@
 import UIKit
 
 
-class AlertVC: UIViewController {
+final class AlertVC: UIViewController {
     
     private lazy var containerView = AlertContainerView()
-    private let titleLabel   = UILabel()
-    private let messageLabel = UILabel()
+    private let titleLabel   = NameLabel(textAlignment: .left, fontSize: 20, type: "medium")
+    private let messageLabel = NameLabel(textAlignment: .left, fontSize: 20, type: "medium")
     private let actionButton = UIButton()
     private var alertTitle:  String?
     private var message:     String?
@@ -39,7 +39,6 @@ class AlertVC: UIViewController {
         configureMessageLabel()
     }
     
-    
     private func configureContainerView(){
         view.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,12 +50,11 @@ class AlertVC: UIViewController {
         ])
     }
     
-    
     private func configureTitleLabel(){
         containerView.addSubview(titleLabel)
         titleLabel.text = alertTitle ?? "Something went wrong"
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font =  UIFont(name: "Montserrat", size: 14)
+        titleLabel.font =  UIFont(name: "SFProDisplay-Medium", size: 14)
         titleLabel.textAlignment = .center
         
         NSLayoutConstraint.activate([
@@ -72,7 +70,7 @@ class AlertVC: UIViewController {
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         actionButton.setTitleColor(.label, for: .normal)
         actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
-        actionButton.titleLabel?.font = UIFont(name: "Montserrat", size: 12)
+        actionButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 12)
         actionButton.backgroundColor = .systemCyan
         actionButton.layer.cornerRadius = 10
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
@@ -85,13 +83,12 @@ class AlertVC: UIViewController {
         ])
     }
     
-    
     private func configureMessageLabel(){
         containerView.addSubview(messageLabel)
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.text = message ?? "Unable to complete request"
         messageLabel.numberOfLines = 4
-        messageLabel.font =  UIFont(name: "Montserrat", size: 12)
+        messageLabel.font =  UIFont(name: "SFProDisplay-Medium", size: 12)
         messageLabel.textAlignment = .center
         
         NSLayoutConstraint.activate([

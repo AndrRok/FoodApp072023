@@ -11,7 +11,7 @@ protocol FilterFoodProtocol {
     func sortFood(keyWord: String)
 }
 
-class CategoriesHeaderView: UIView {
+final class CategoriesHeaderView: UIView {
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createCategoriesLayout(in: self))
     private let categoryArray = ["Все меню", "Салаты", "С рисом", "С рыбой"]
@@ -42,7 +42,7 @@ class CategoriesHeaderView: UIView {
         collectionView.translatesAutoresizingMaskIntoConstraints    = false
         collectionView.isUserInteractionEnabled                     = true
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseID)
-        let insets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 10)
         collectionView.contentInset = insets
         
         NSLayoutConstraint.activate([
@@ -53,9 +53,6 @@ class CategoriesHeaderView: UIView {
         ])
     }
 }
-
-
-
 
 //MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension CategoriesHeaderView: UICollectionViewDelegate, UICollectionViewDataSource{

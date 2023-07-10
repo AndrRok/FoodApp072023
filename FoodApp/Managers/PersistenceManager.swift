@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 
-class CartItemsRealm: Object{
+final class CartItemsRealm: Object{
     @Persisted dynamic var nameOfItem   = String()
     @Persisted dynamic var imageUrl     = String()
     @Persisted dynamic var price        = Int()
@@ -59,7 +59,6 @@ class PersistenceManager{
         try! realm.write{
             realm.delete(item) }
     }
-    
     
     func deleteDataFromCart(idForDelete: String){
         let realm = try! Realm()

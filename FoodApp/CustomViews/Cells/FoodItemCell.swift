@@ -8,12 +8,12 @@
 import UIKit
 
 
-class FoodItemCell: UICollectionViewCell {
+final class FoodItemCell: UICollectionViewCell {
     
     public static let reuseID = "foodItemCell"
-    private let nameLabel       = NameLabel(textAlignment: .left, fontSize: 12)
+    private let nameLabel  = NameLabel(textAlignment: .left, fontSize: 14, type: "regular")
     private lazy var container = UIView()
-    private let foodImageView                = ItemImage(frame: .zero)
+    private let foodImageView = ItemImage(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,8 +38,8 @@ class FoodItemCell: UICollectionViewCell {
         addSubview(container)
         container.addSubviews(foodImageView, nameLabel)
         container.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints        = false
-        foodImageView.translatesAutoresizingMaskIntoConstraints        = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints  = false
+        foodImageView.translatesAutoresizingMaskIntoConstraints = false
         foodImageView.contentMode = .scaleToFill
         container.backgroundColor = Colors.lightBrown
         container.layer.cornerRadius = 10
@@ -49,13 +49,14 @@ class FoodItemCell: UICollectionViewCell {
             container.leadingAnchor.constraint(equalTo: leadingAnchor),
             container.trailingAnchor.constraint(equalTo: trailingAnchor),
             container.heightAnchor.constraint(equalToConstant: 110),
+            container.widthAnchor.constraint(equalToConstant: 110),
             
             foodImageView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
             foodImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             foodImageView.heightAnchor.constraint(equalToConstant: 90),
             foodImageView.widthAnchor.constraint(equalToConstant: 90),
             
-            nameLabel.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 10),
+            nameLabel.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 5),
             nameLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -5)
         ])

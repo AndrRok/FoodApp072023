@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6204C7892A53743600ACBAAC /* Montserrat-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6204C7872A53743600ACBAAC /* Montserrat-Italic-VariableFont_wght.ttf */; };
-		6204C78A2A53743600ACBAAC /* Montserrat-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6204C7882A53743600ACBAAC /* Montserrat-VariableFont_wght.ttf */; };
-		6204C78E2A53763D00ACBAAC /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6204C78D2A53763D00ACBAAC /* Lobster-Regular.ttf */; };
+		6243A5182A5C385D00931DBC /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6243A5172A5C385D00931DBC /* SF-Pro-Display-Medium.otf */; };
+		6243A5192A5C392F00931DBC /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6243A5172A5C385D00931DBC /* SF-Pro-Display-Medium.otf */; };
+		6243A51A2A5C393000931DBC /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6243A5172A5C385D00931DBC /* SF-Pro-Display-Medium.otf */; };
+		6243A51E2A5C446800931DBC /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6243A51D2A5C446800931DBC /* SF-Pro-Display-Regular.otf */; };
 		625BB2682A50040C0040F576 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625BB2672A50040C0040F576 /* UIHelper.swift */; };
 		625BB26A2A5004190040F576 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625BB2692A5004190040F576 /* Constants.swift */; };
 		625BB26C2A5004250040F576 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625BB26B2A5004250040F576 /* Colors.swift */; };
@@ -68,9 +69,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6204C7872A53743600ACBAAC /* Montserrat-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
-		6204C7882A53743600ACBAAC /* Montserrat-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-VariableFont_wght.ttf"; sourceTree = "<group>"; };
-		6204C78D2A53763D00ACBAAC /* Lobster-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lobster-Regular.ttf"; sourceTree = "<group>"; };
+		6243A5172A5C385D00931DBC /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
+		6243A51D2A5C446800931DBC /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
 		625BB2672A50040C0040F576 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		625BB2692A5004190040F576 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		625BB26B2A5004250040F576 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -143,9 +143,8 @@
 		6204C7862A53740E00ACBAAC /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				6204C7872A53743600ACBAAC /* Montserrat-Italic-VariableFont_wght.ttf */,
-				6204C7882A53743600ACBAAC /* Montserrat-VariableFont_wght.ttf */,
-				6204C78D2A53763D00ACBAAC /* Lobster-Regular.ttf */,
+				6243A51D2A5C446800931DBC /* SF-Pro-Display-Regular.otf */,
+				6243A5172A5C385D00931DBC /* SF-Pro-Display-Medium.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -215,10 +214,10 @@
 		625BB2612A50037B0040F576 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				625BB2A92A51A37C0040F576 /* LocationDateView.swift */,
 				625BB27B2A5006A60040F576 /* AlertContainerView.swift */,
 				625BB28F2A508A880040F576 /* CategoriesHeaderView.swift */,
 				625BB29C2A5195100040F576 /* CustomStepper.swift */,
-				625BB2A92A51A37C0040F576 /* LocationDateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -444,10 +443,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6204C78A2A53743600ACBAAC /* Montserrat-VariableFont_wght.ttf in Resources */,
-				6204C78E2A53763D00ACBAAC /* Lobster-Regular.ttf in Resources */,
+				6243A5182A5C385D00931DBC /* SF-Pro-Display-Medium.otf in Resources */,
 				62C978EA2A4EEB7C00CF8FCE /* LaunchScreen.storyboard in Resources */,
-				6204C7892A53743600ACBAAC /* Montserrat-Italic-VariableFont_wght.ttf in Resources */,
+				6243A51E2A5C446800931DBC /* SF-Pro-Display-Regular.otf in Resources */,
 				62C978E72A4EEB7C00CF8FCE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -456,6 +454,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6243A5192A5C392F00931DBC /* SF-Pro-Display-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,6 +462,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6243A51A2A5C393000931DBC /* SF-Pro-Display-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

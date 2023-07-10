@@ -11,7 +11,7 @@ protocol SendValueProtocol{
     func setValue(value: Int)
 }
 
-class CustomStepper: UIView {
+final class CustomStepper: UIView {
     
     var sendValueDelegate: SendValueProtocol?
     private let stackView    = UIStackView()
@@ -32,7 +32,7 @@ class CustomStepper: UIView {
     }
     
     private func configure(){
-        backgroundColor = .tertiaryLabel
+        backgroundColor = Colors.lightGrayStepper
         layer.cornerRadius = 10
         sendValueDelegate?.setValue(value: currentValue)
         configureStack()
@@ -46,7 +46,6 @@ class CustomStepper: UIView {
         valueLabel.text = "\(currentValue)"
     }
     
-    
     private func configureStack(){
         addSubview(stackView)
         stackView.addArrangedSubview(minusButton)
@@ -55,16 +54,14 @@ class CustomStepper: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 10
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-    
     
     private func configureButtons(){
         minusButton.setImage(UIImage(systemName: "minus"), for: .normal)
@@ -79,10 +76,10 @@ class CustomStepper: UIView {
         valueLabel.text = "\(currentValue)"
         valueLabel.textAlignment = .center
         valueLabel.textColor = .black
+        valueLabel.font = UIFont(name: "SFProDisplay-Regular", size: 14)
     }
     
     @objc private func increaseValue(){
-        
         switch currentValue {
         case 1...:
             currentValue += 1
@@ -94,7 +91,6 @@ class CustomStepper: UIView {
             break
         }
     }
-    
     
     @objc private func decreaseValue(){
         let item = cartArray[cellId]

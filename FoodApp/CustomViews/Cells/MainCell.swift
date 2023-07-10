@@ -7,11 +7,11 @@
 
 import UIKit
 
-class MainCell: UICollectionViewCell {
+final class MainCell: UICollectionViewCell {
     
     public static let reuseID = "mainCell"
-    private let nameLabel       = NameLabel(textAlignment: .left, fontSize: 20)
-    private let foodImageView                = ItemImage(frame: .zero)
+    private let nameLabel = NameLabel(textAlignment: .left, fontSize: 20, type: "medium")
+    private let foodImageView = ItemImage(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,6 +40,7 @@ class MainCell: UICollectionViewCell {
         foodImageView.setDefaultmage()
         foodImageView.layer.cornerRadius = 10
         nameLabel.textColor = .black
+       
         
         NSLayoutConstraint.activate([
             foodImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -48,8 +49,8 @@ class MainCell: UICollectionViewCell {
             foodImageView.topAnchor.constraint(equalTo: topAnchor),
             foodImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            nameLabel.topAnchor.constraint(equalTo: foodImageView.topAnchor, constant: Values.padding),
-            nameLabel.leadingAnchor.constraint(equalTo: foodImageView.leadingAnchor, constant: 0.25*Values.padding),
+            nameLabel.topAnchor.constraint(equalTo: foodImageView.topAnchor, constant: 16),
+            nameLabel.leadingAnchor.constraint(equalTo: foodImageView.leadingAnchor, constant: 12),
         ])
     }
 }

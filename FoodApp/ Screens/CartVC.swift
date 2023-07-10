@@ -7,19 +7,18 @@
 
 import UIKit
 
-class CartVC: ParentVC {
+final class CartVC: ParentVC {
     
     private let tableView = UITableView()
-    private lazy var navBar = UINavigationBar(frame: .zero)
+    private lazy var navBar = UIView()
     private lazy var leftView = LocationDateView()
     private lazy var profileButton = UIButton()
     private let payButton = UIButton()
-    public let payButtonPriceLabel  = NameLabel(textAlignment: .left, fontSize: 20)
-    private let payButtonTitleLabel = NameLabel(textAlignment: .right, fontSize: 20)
-    private let weightLabel = UILabel()
-    private lazy var buttonStack = UIStackView()
+    public let payButtonPriceLabel  = NameLabel(textAlignment: .left, fontSize: 16, type: "medium")
+    private let payButtonTitleLabel = NameLabel(textAlignment: .right, fontSize: 16, type: "medium")
+    private let buttonContainer = UIView()
     private var cartArray = PersistenceManager.sharedRealm.inCartItem
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -45,33 +44,37 @@ class CartVC: ParentVC {
         configurePayButton()
         configurePayButtonLabels()
     }
-
+    
     //MARK: - Configure UI
     private func configureNB(){
         view.addSubview(navBar)
         navBar.translatesAutoresizingMaskIntoConstraints = false
-        navBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-        navBar.shadowImage = UIImage()
-        let navItem = UINavigationItem()
-        let placeItem          = UIBarButtonItem(customView: leftView)
-        let profileItem = UIBarButtonItem(customView: profileButton)
-        navItem.leftBarButtonItem = placeItem
-        navItem.rightBarButtonItem = profileItem
-        navBar.setItems([navItem], animated: false)
+        navBar.addSubviews(leftView, profileButton)
         
         NSLayoutConstraint.activate([
-            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             navBar.widthAnchor.constraint(equalToConstant: view.frame.size.width),
-            navBar.heightAnchor.constraint(equalToConstant: 100)
+            navBar.heightAnchor.constraint(equalToConstant: 57),
+            
+            leftView.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
+            leftView.heightAnchor.constraint(equalToConstant: 42),
+            leftView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            
+            profileButton.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
+            profileButton.heightAnchor.constraint(equalToConstant: 44),
+            profileButton.widthAnchor.constraint(equalToConstant: 44),
+            profileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
         ])
     }
-    
     
     private func configureProfileButton(){
         profileButton.translatesAutoresizingMaskIntoConstraints = false
         DispatchQueue.main.async { [self] in
             profileButton.setImage(resizeImage(image: UIImage(named: "face")!, targetSize: CGSize(width: 45, height: 45)), for: .normal)
         }
+        profileButton.layer.borderColor = UIColor.systemBackground.cgColor
+        profileButton.layer.borderWidth = 1
         
         NSLayoutConstraint.activate([
             profileButton.heightAnchor.constraint(equalToConstant: 45),
@@ -79,23 +82,23 @@ class CartVC: ParentVC {
         ])
     }
     
-    
     func configureTableView(){
         view.addSubview(tableView)
-        tableView.rowHeight = 100
+        tableView.rowHeight = 65
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .systemBackground
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.allowsSelection = false
         tableView.register(CartCell.self, forCellReuseIdentifier: CartCell.reuseID)
+        tableView.separatorStyle = .none
         let insets = UIEdgeInsets(top: 0, left: 0, bottom: 120, right: 0)
         tableView.contentInset = insets
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 5),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 16),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
@@ -109,33 +112,36 @@ class CartVC: ParentVC {
         payButton.layer.cornerRadius = 10
         
         NSLayoutConstraint.activate([
-            payButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            payButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
-            payButton.widthAnchor.constraint(equalToConstant: 340),
+            payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            payButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            payButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -106),
             payButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
     
     private func configurePayButtonLabels(){
-        payButton.addSubviews(buttonStack)
+        payButton.addSubviews(buttonContainer)
+        buttonContainer.addSubviews(payButtonPriceLabel, payButtonTitleLabel)
+        buttonContainer.translatesAutoresizingMaskIntoConstraints = false
         payButtonTitleLabel.textColor = .white
         payButtonPriceLabel.textColor = .white
-        buttonStack.translatesAutoresizingMaskIntoConstraints = false
         payButtonTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         payButtonPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        buttonStack.addArrangedSubview(payButtonTitleLabel)
-        buttonStack.addArrangedSubview(payButtonPriceLabel)
-        buttonStack.axis = .horizontal
-        buttonStack.alignment = .center
-        buttonStack.distribution = .fillEqually
-        buttonStack.spacing = 10
         payButtonTitleLabel.text = "Оплатить"
-        payButtonPriceLabel.text = "\(calcTotalPrice())₽"
-        
+        payButtonPriceLabel.text = "\(calcTotalPrice()) ₽"
+    
         NSLayoutConstraint.activate([
-            buttonStack.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
-            buttonStack.centerXAnchor.constraint(equalTo: payButton.centerXAnchor),
+            buttonContainer.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
+            buttonContainer.centerXAnchor.constraint(equalTo: payButton.centerXAnchor),
+            buttonContainer.heightAnchor.constraint(equalToConstant: 20),
+          
+            payButtonTitleLabel.centerYAnchor.constraint(equalTo: buttonContainer.centerYAnchor),
+            payButtonTitleLabel.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
+            
+            payButtonPriceLabel.centerYAnchor.constraint(equalTo: buttonContainer.centerYAnchor),
+            payButtonPriceLabel.leadingAnchor.constraint(equalTo: payButtonTitleLabel.trailingAnchor, constant: 5),
+            payButtonPriceLabel.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor)
         ])
     }
     
@@ -158,7 +164,7 @@ class CartVC: ParentVC {
     
     @objc private func updateTotalPrice(notification: NSNotification){
         cartArray = PersistenceManager.sharedRealm.inCartItem
-        payButtonPriceLabel.text = "\(calcTotalPrice())₽"
+        payButtonPriceLabel.text = "\(calcTotalPrice()) ₽"
         reloadTableView()
     }
 }
@@ -181,7 +187,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate{
         return cell
     }
 }
-
 
 extension CartVC: ReloadCartProtocol{
     func reloadCart() {

@@ -7,9 +7,9 @@
 
 import UIKit
 
-class MainVC: ParentVC {
+final class MainVC: ParentVC {
     
-    private lazy var navBar = UINavigationBar(frame: .zero)
+    private lazy var navBar = UIView()
     private lazy var leftView = LocationDateView()
     private lazy var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createMainLayout(in: view))
     private lazy var profileButton = UIButton()
@@ -38,7 +38,6 @@ class MainVC: ParentVC {
         configureCollectionView()
     }
     
-    
     //MARK: - Network calls
     private func getLatestFromAPI(){
         NetworkManager.shared.getMainRequest() { [weak self] result in
@@ -57,38 +56,38 @@ class MainVC: ParentVC {
     //MARK: - Configure UI
     private func configureNB(){
         view.addSubview(navBar)
-        navBar.backgroundColor = .systemBackground
         navBar.translatesAutoresizingMaskIntoConstraints = false
-        navBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-        navBar.shadowImage = UIImage()
-        let navItem = UINavigationItem()
-        let placeItem          = UIBarButtonItem(customView: leftView)
-        let profileItem = UIBarButtonItem(customView: profileButton)
-        navItem.leftBarButtonItem = placeItem
-        navItem.rightBarButtonItem = profileItem
-        navBar.setItems([navItem], animated: false)
+        navBar.addSubviews(leftView, profileButton)
         
         NSLayoutConstraint.activate([
-            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             navBar.widthAnchor.constraint(equalToConstant: view.frame.size.width),
-            navBar.heightAnchor.constraint(equalToConstant: 100)
+            navBar.heightAnchor.constraint(equalToConstant: 57),
+            
+            leftView.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
+            leftView.heightAnchor.constraint(equalToConstant: 42),
+            leftView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+        
+            profileButton.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
+            profileButton.heightAnchor.constraint(equalToConstant: 44),
+            profileButton.widthAnchor.constraint(equalToConstant: 44),
+            profileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
-    
     
     private func configureProfileButton(){
         profileButton.translatesAutoresizingMaskIntoConstraints = false
         DispatchQueue.main.async { [self] in
             profileButton.setImage(resizeImage(image: UIImage(named: "face")!, targetSize: CGSize(width: 45, height: 45)), for: .normal)
         }
+        profileButton.layer.borderColor = UIColor.systemBackground.cgColor
+        profileButton.layer.borderWidth = 1
         
         NSLayoutConstraint.activate([
             profileButton.heightAnchor.constraint(equalToConstant: 45),
             profileButton.widthAnchor.constraint(equalToConstant: 45)
         ])
-        
     }
-    
     
     private func configureCollectionView(){
         view.addSubview(collectionView)
@@ -103,15 +102,12 @@ class MainVC: ParentVC {
         collectionView.contentInset = insets
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            collectionView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 5),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    
-    
 }
 
 
@@ -121,7 +117,6 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return foodItems.count
@@ -135,7 +130,7 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource{
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        NotificationCenter.default.post(name: Notification.Name("changeIndexToCategoryVC"), object: nil)
+         NotificationCenter.default.post(name: Notification.Name("changeIndexToCategoryVC"), object: nil)
     }
 }
 

@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ProfileVC: ParentVC {
-
+final class ProfileVC: ParentVC {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemTeal

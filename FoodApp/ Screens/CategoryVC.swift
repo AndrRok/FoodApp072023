@@ -7,9 +7,9 @@
 
 import UIKit
 
-class CategoryVC: ParentVC {
+final class CategoryVC: ParentVC {
     
-    private lazy var navBar = UINavigationBar(frame: .zero)
+    private lazy var navBar = UIView()
     private lazy var profileButton          = UIButton()
     private lazy var headerViewCategories   = CategoriesHeaderView(frame: .zero)
     private lazy var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createSecondVCLayout(in: view))
@@ -35,14 +35,12 @@ class CategoryVC: ParentVC {
     }
     
     private func configure(){
-        configureProfileButton()
         configureNB()
+        configureProfileButton()
         configureStickyHeader()
         configureCollectionView()
         headerViewCategories.delegateSortFood = self
     }
-    
-    
     
     //MARK: - Network calls
     private func getDishesFromAPI(filter: Bool){
@@ -69,27 +67,31 @@ class CategoryVC: ParentVC {
     private func configureNB(){
         view.addSubview(navBar)
         navBar.translatesAutoresizingMaskIntoConstraints = false
-        navBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-        navBar.shadowImage = UIImage()
-        let goBackButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let configuration = UIImage.SymbolConfiguration(pointSize: 20)
+        let goBackButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        goBackButton.translatesAutoresizingMaskIntoConstraints = false
+        let configuration = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
         let image = UIImage(systemName: "chevron.left", withConfiguration: configuration)
         goBackButton.setImage(image, for: .normal)
         goBackButton.tintColor = .label
         goBackButton.layer.cornerRadius = 10
         goBackButton.layer.masksToBounds = true
         goBackButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-        let navItem = UINavigationItem()
-        let backButton          = UIBarButtonItem(customView: goBackButton)
-        let profileButton          = UIBarButtonItem(customView: profileButton)
-        navItem.rightBarButtonItem = profileButton
-        navItem.leftBarButtonItem = backButton
-        navBar.setItems([navItem], animated: false)
-        navItem.title = "Азиатская кухня"
+        
+        let titleLabel = NameLabel(textAlignment: .center, fontSize: 18, type: "medium")
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "Азиатская кухня"
+        
+        navBar.addSubviews(goBackButton, titleLabel, profileButton)
         NSLayoutConstraint.activate([
-            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             navBar.widthAnchor.constraint(equalToConstant: view.frame.size.width),
-            navBar.heightAnchor.constraint(equalToConstant: 40)
+            navBar.heightAnchor.constraint(equalToConstant: 40),
+            
+            goBackButton.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
+            goBackButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            
+            titleLabel.centerXAnchor.constraint(equalTo: navBar.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
         ])
     }
     
@@ -98,10 +100,14 @@ class CategoryVC: ParentVC {
         DispatchQueue.main.async { [self] in
             profileButton.setImage(resizeImage(image: UIImage(named: "face")!, targetSize: CGSize(width: 45, height: 45)), for: .normal)
         }
+        profileButton.layer.borderColor = UIColor.systemBackground.cgColor
+        profileButton.layer.borderWidth = 1
         
         NSLayoutConstraint.activate([
-            profileButton.heightAnchor.constraint(equalToConstant: 45),
-            profileButton.widthAnchor.constraint(equalToConstant: 45)
+            profileButton.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
+            profileButton.heightAnchor.constraint(equalToConstant: 44),
+            profileButton.widthAnchor.constraint(equalToConstant: 44),
+            profileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
@@ -135,8 +141,8 @@ class CategoryVC: ParentVC {
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: headerViewCategories.bottomAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
@@ -177,7 +183,6 @@ extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource{
         self.presentCustomDetailsVCOnMainThred(foodItem: dish)
     }
 }
-
 
 extension CategoryVC: FilterFoodProtocol{
     func sortFood(keyWord: String) {
