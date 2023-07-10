@@ -14,18 +14,24 @@ final class CustomTabBar: UIViewController {
     private lazy var searchVCButton         = UIButton()
     private lazy var cartVCButton           = UIButton()
     private lazy var profileVCButton        = UIButton()
-   
+    private  var mainVC = MainVC()
+    private  var categoryVC = CategoryVC()
+    private  var cartVC = CartVC()
+    private  var serarchVC = SearchVC()
+    private  var profileVC = ProfileVC()
+    private var isCategoryPresented: Bool?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        setVC(vc: MainVC())
+        setVC(vc: mainVC)
         configureButtons()
         redrawButtons()
         mainVCButton.configuration?.baseForegroundColor = Colors.originalBlue
         NotificationCenter.default.addObserver(self, selector: #selector(goCategoryVC(notification:)), name: Notification.Name("changeIndexToCategoryVC"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(goMainVC(notification:)), name: Notification.Name("changeIndexToMain"), object: nil)
     }
-
+    
     private func configure(){
         view.addSubview(tabBar)
         tabBar.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +64,14 @@ final class CustomTabBar: UIViewController {
             lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             lineView.heightAnchor.constraint(equalToConstant: 1),
         ])
+        
+        let arrayVC      = [mainVC, categoryVC, cartVC, profileVC, serarchVC]
+        for vc in arrayVC {
+            addChild(vc)
+            vc.view.frame = view.bounds
+            view.addSubview(vc.view)
+            vc.didMove(toParent: self)
+        }
     }
     
     private func configureButtons(){
@@ -67,9 +81,14 @@ final class CustomTabBar: UIViewController {
         setFontAndTextForButtons(mainVCButton, buttonText: "Главная")
         mainVCButton.configuration?.imagePlacement = .top
         mainVCButton.addAction(UIAction{ [self]_ in
-            self.setVC(vc: MainVC())
             redrawButtons()
             mainVCButton.configuration?.baseForegroundColor = Colors.originalBlue
+            switch isCategoryPresented {
+            case true:
+                self.setVC(vc: categoryVC)
+            default:
+                self.setVC(vc: mainVC)
+            }
         }, for: .touchUpInside)
         
         var searchButtonConfiguration = UIButton.Configuration.filled()
@@ -78,7 +97,7 @@ final class CustomTabBar: UIViewController {
         setFontAndTextForButtons(searchVCButton, buttonText: "Поиск")
         searchVCButton.configuration?.imagePlacement = .top
         searchVCButton.addAction(UIAction{ [self] _ in
-            self.setVC(vc: SearchVC())
+            self.setVC(vc: serarchVC)
             redrawButtons()
             searchVCButton.configuration?.baseForegroundColor = Colors.originalBlue
         }, for: .touchUpInside)
@@ -89,9 +108,10 @@ final class CustomTabBar: UIViewController {
         setFontAndTextForButtons(cartVCButton, buttonText: "Корзина")
         cartVCButton.configuration?.imagePlacement = .top
         cartVCButton.addAction(UIAction{ [self]_ in
-            self.setVC(vc: CartVC())
+            self.setVC(vc: cartVC)
             redrawButtons()
             cartVCButton.configuration?.baseForegroundColor = Colors.originalBlue
+            NotificationCenter.default.post(name: Notification.Name("reloadCart"), object: nil)
         }, for: .touchUpInside)
         
         var profileButtonConfiguration = UIButton.Configuration.filled()
@@ -100,7 +120,7 @@ final class CustomTabBar: UIViewController {
         setFontAndTextForButtons(profileVCButton, buttonText: "Аккаунт")
         profileVCButton.configuration?.imagePlacement = .top
         profileVCButton.addAction(UIAction{ [self]_ in
-            self.setVC(vc: ProfileVC())
+            self.setVC(vc: profileVC)
             redrawButtons()
             profileVCButton.configuration?.baseForegroundColor = Colors.originalBlue
         }, for: .touchUpInside)
@@ -108,12 +128,9 @@ final class CustomTabBar: UIViewController {
     
     private func setVC(vc: UIViewController){
         DispatchQueue.main.async { [self] in
-            view.subviews.forEach({ $0.removeFromSuperview() })
-            configure()
-            addChild(vc)
-            vc.view.frame = view.bounds
-            view.addSubview(vc.view)
-            vc.didMove(toParent: self)
+            let arrayVC      = [mainVC, categoryVC, cartVC, profileVC, serarchVC]
+            for vc in arrayVC { vc.view.isHidden = true}
+            vc.view.isHidden = false
             view.bringSubviewToFront(tabBar)
         }
     }
@@ -142,14 +159,16 @@ final class CustomTabBar: UIViewController {
     }
     
     @objc private func goMainVC(notification: NSNotification){
-        setVC(vc: MainVC())
+        isCategoryPresented = false
+        setVC(vc: mainVC)
     }
     
     @objc private func goCategoryVC(notification: NSNotification){
-        setVC(vc: CategoryVC())
+        setVC(vc: categoryVC)
+        isCategoryPresented = true
     }
     
     @objc private func goCartVC(notification: NSNotification){
-        setVC(vc: MainVC())
+        setVC(vc: cartVC)
     }
 }

@@ -24,11 +24,9 @@ final class CartVC: ParentVC {
         view.backgroundColor = .systemBackground
         configure()
         NotificationCenter.default.addObserver(self, selector: #selector(updateTotalPrice(notification:)), name: Notification.Name("StepperValueChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTotalPrice(notification:)), name: Notification.Name("reloadCart"), object: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        dismiss(animated: false, completion: nil)
-    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -64,7 +62,6 @@ final class CartVC: ParentVC {
             profileButton.heightAnchor.constraint(equalToConstant: 44),
             profileButton.widthAnchor.constraint(equalToConstant: 44),
             profileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
         ])
     }
     
@@ -145,7 +142,6 @@ final class CartVC: ParentVC {
         ])
     }
     
-    
     private func reloadTableView(){
         cartArray = PersistenceManager.sharedRealm.inCartItem
         DispatchQueue.main.async {
@@ -167,6 +163,7 @@ final class CartVC: ParentVC {
         payButtonPriceLabel.text = "\(calcTotalPrice()) ₽"
         reloadTableView()
     }
+
 }
 
 

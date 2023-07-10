@@ -24,7 +24,7 @@ final class ProductDetailsVC: UIViewController {
     private let padding: CGFloat = 10
     private var item: Dishes!
     
-    init(foodItem: Dishes){
+    required init(foodItem: Dishes){
         super.init(nibName: nil, bundle: nil)
         self.item = foodItem
         nameLabel.text = item.name

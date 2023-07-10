@@ -149,7 +149,7 @@ final class CategoryVC: ParentVC {
     
     @objc private func dismissVC(){
         NotificationCenter.default.post(name: Notification.Name("changeIndexToMain"), object: nil)
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
     }
     
     //MARK: - ReloadCollectionView
