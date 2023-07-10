@@ -10,7 +10,7 @@ import UIKit
 final class CustomTabBar: UIViewController {
     
     private lazy var tabBar                 = UIStackView()
-    private lazy var mainVCButton           = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+    private lazy var mainVCButton           = UIButton()
     private lazy var searchVCButton         = UIButton()
     private lazy var cartVCButton           = UIButton()
     private lazy var profileVCButton        = UIButton()
