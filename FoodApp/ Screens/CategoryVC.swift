@@ -52,6 +52,7 @@ final class CategoryVC: ParentVC {
                 guard filter else {
                     DispatchQueue.main.async {
                         self.configure()
+                        self.reloadCollectionView()
                     }
                     return
                 }
@@ -153,7 +154,7 @@ final class CategoryVC: ParentVC {
     }
     
     public func reloadVC(){
-        reloadCollectionView()
+        getDishesFromAPI(filter: false)
         headerViewCategories.reloadView()
     }
     
