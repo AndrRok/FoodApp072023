@@ -165,6 +165,7 @@ final class CustomTabBar: UIViewController {
     
     @objc private func goCategoryVC(notification: NSNotification){
         setVC(vc: categoryVC)
+        categoryVC.reloadVC()
         isCategoryPresented = true
     }
     

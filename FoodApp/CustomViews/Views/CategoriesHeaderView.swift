@@ -52,6 +52,14 @@ final class CategoriesHeaderView: UIView {
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
+    
+    public func reloadView(){
+        DispatchQueue.main.async{
+            self.collectionView.reloadData()
+            self.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: UICollectionView.ScrollPosition.centeredHorizontally)
+        }
+       
+    }
 }
 
 //MARK: - UICollectionViewDelegate, UICollectionViewDataSource

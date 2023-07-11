@@ -152,6 +152,11 @@ final class CategoryVC: ParentVC {
         //self.dismiss(animated: true, completion: nil)
     }
     
+    public func reloadVC(){
+        reloadCollectionView()
+        headerViewCategories.reloadView()
+    }
+    
     //MARK: - ReloadCollectionView
     private func reloadCollectionView(){
         DispatchQueue.main.async{
