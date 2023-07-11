@@ -9,11 +9,11 @@ import UIKit
 
 final class CustomTabBar: UIViewController {
     
-    private lazy var tabBar                 = UIStackView()
-    private lazy var mainVCButton           = UIButton()
-    private lazy var searchVCButton         = UIButton()
-    private lazy var cartVCButton           = UIButton()
-    private lazy var profileVCButton        = UIButton()
+    private lazy var tabBar          = UIStackView()
+    private lazy var mainVCButton    = UIButton()
+    private lazy var searchVCButton  = UIButton()
+    private lazy var cartVCButton    = UIButton()
+    private lazy var profileVCButton = UIButton()
     private  var mainVC = MainVC()
     private  var categoryVC = CategoryVC()
     private  var cartVC = CartVC()

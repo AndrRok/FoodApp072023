@@ -10,10 +10,10 @@ import UIKit
 final class CategoryVC: ParentVC {
     
     private lazy var navBar = UIView()
-    private lazy var profileButton          = UIButton()
-    private lazy var headerViewCategories   = CategoriesHeaderView(frame: .zero)
+    private lazy var profileButton = UIButton()
+    private lazy var headerViewCategories = CategoriesHeaderView(frame: .zero)
     private lazy var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createSecondVCLayout(in: view))
-    private lazy var dishesArray:    [Dishes]      = []
+    private lazy var dishesArray: [Dishes] = []
     private var keyWord: String!
     
     override func viewDidLoad() {
@@ -112,7 +112,6 @@ final class CategoryVC: ParentVC {
         ])
     }
     
-    
     private func configureStickyHeader(){
         view.addSubview(headerViewCategories)
         headerViewCategories.translatesAutoresizingMaskIntoConstraints = false
@@ -126,7 +125,6 @@ final class CategoryVC: ParentVC {
             headerViewCategories.heightAnchor.constraint(equalToConstant: 55)
         ])
     }
-    
     
     private func configureCollectionView(){
         view.addSubview(collectionView)
