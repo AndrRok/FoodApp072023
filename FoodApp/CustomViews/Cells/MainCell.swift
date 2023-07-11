@@ -51,6 +51,7 @@ final class MainCell: UICollectionViewCell {
             
             nameLabel.topAnchor.constraint(equalTo: foodImageView.topAnchor, constant: 16),
             nameLabel.leadingAnchor.constraint(equalTo: foodImageView.leadingAnchor, constant: 12),
+            nameLabel.widthAnchor.constraint(equalToConstant: 190)
         ])
     }
 }
